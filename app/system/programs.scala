@@ -17,5 +17,9 @@ object programs {
   def getParameters(program: String) = {
     (program + " --help").!!
   }
+  
+  def getManpage(program: String) = {
+    ("man "+program).!!
+  }
 
 }
