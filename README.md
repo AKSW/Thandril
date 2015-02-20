@@ -11,7 +11,7 @@ Once your Server is running all you need to do is open your browser pointing to 
 
 ### Environment ###
 
-Thandril was built with a variety of Frameworks and is mainly written in Scala, HTML, JS and CSS. The Webserver itself was built with the [Scala Play-Framework](//www.playframework.com/). The Website was built mainl with [Twitter Bootstrap](://getbootstrap.com/), [JQuery](://jquery.com/) and [FontAwesome](//fortawesome.github.io/Font-Awesome/)
+Thandril was built with a variety of Frameworks and is mainly written in Scala, HTML, JS and CSS. The Webserver itself was built with the [Scala Play-Framework](//www.playframework.com/). The Website was built mainly with [Twitter Bootstrap](//getbootstrap.com/), [JQuery](//jquery.com/) and [FontAwesome](//fortawesome.github.io/Font-Awesome/)
 
 ### Compilation/Running the Server  ###
 
