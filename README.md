@@ -3,7 +3,7 @@ Thandril
 
 This repository contains the code of the Web-Application Thandril. Thandril is an application where users are abel to create workflow pipelines for Linux command line programs.
 
-![In this picture you'll see the dashboard of Thandril](//github.com/AKSW/Thandril/raw/master/screenshot.png "Screenshot of the Thandril")
+![Screenshot of Thandril](https://github.com/AKSW/Thandril/raw/master/screenshot.png)
 
 ### Using Thandril ###
 
