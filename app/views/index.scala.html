@@ -74,7 +74,8 @@
                                     <i class="fa fa-tasks fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class="huge">@(programs.foldLeft(0){ (a,b) => a + b._2.size})</div>
+                                    <div class="huge">@(programs.foldLeft(0){ (a,b) => a + b._2.size})
+                                    </div>
                                     <div>Programs in Database</div>
                                 </div>
                             </div>
@@ -97,11 +98,15 @@
                                 </div>
                                 <div class="col-xs-9 text-right">
                                     <div class="huge">12</div>
-                                    <div>Uploaded Programs</div>
+                                    <div>Uploaded Program</div>
                                 </div>
                             </div>
                         </div>
-                        <a href="#">
+                        <form enctype="multipart/form-data" method="post" action="http://localhost:9000/program/upload" target="_blank" style="display: none;">
+							<input type="file" name="prog" id="filechooser1">
+							<input type="submit" id="filesubmit1">
+						</form>
+                        <a href="#" id="upload1">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -152,7 +157,7 @@
 					<br>
                     <!-- /.panel -->
                     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                    @programs.map{case (name,progs) =>
+                    @programs.map{case (name,progs) => 
                     	<div class="panel panel-default">
 						    <div class="panel-heading" role="tab" id="headingOne">
 						      <h4 class="panel-title">
@@ -168,13 +173,13 @@
 										<i class="fa fa-file-text fa-2x fa-fw" style="color: gray;"></i>
 										<i class="prog-name">@prog</i>
 										<button type="button" class="btn btn-primary pull-right">Info</button>
-										<hr>
+										<hr/>
 									</div>
                     			}
                     			</div>
 						    </div>
 						  </div>
-					}
+						}
 					</div>
                 </div>
                 <!-- /.col-lg-8 -->
@@ -244,7 +249,7 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js" type="text/javascript"></script>
 
     <!-- Custom Theme JavaScript -->
-    <script src="@routes.Assets.at("javascripts/sb-admin-2.js")" type="text/javascript"></script>
+    <!-- <script src="@routes.Assets.at("javascripts/sb-admin-2.js")" type="text/javascript"></script> -->
     
     <script src="//rawgithub.com/stidges/jquery-searchable/master/dist/jquery.searchable-1.1.0.min.js" type="text/javascript"></script>
     
@@ -281,6 +286,32 @@
 					alert('failed')
 				});
 			});
+		
+		$("#upload1").click(function(e){
+			e.preventDefault();
+			$("#filechooser1").click();
+		});
+
+		$("#filechooser1").change(function(e){
+			var file = e.target.files;
+			var data = new FormData();
+		    $.each(file, function(key, value){
+		        data.append(key, value);
+		    });
+
+		    $.ajax({
+		        url: '//localhost:9000/program/upload',
+		        type: 'POST',
+		        data: data,
+		        cache: false,
+		        processData: false, // Don't process the files
+		        contentType: "multipart/form-data", // Set content type to false as jQuery will tell the server its a query string request
+		        success: function(data, textStatus, jqXHR){
+		        },
+		        error: function(jqXHR, textStatus, errorThrown){
+		        }
+		    });
+		})
 		</script>
 
 </body>
