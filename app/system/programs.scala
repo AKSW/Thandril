@@ -7,7 +7,7 @@ import play.api.Logger
 object programs {
 
   val whitelist = Set("cat", "grep", "dmesg", "sed")
-  val dirs = List("/usr/bin", "./bin")
+  val dirs = List("/usr/bin", "./uploadedPrograms")
 
   /**
    * Selects all installed programs of the host machine, filtered by whitelist
@@ -15,30 +15,19 @@ object programs {
    */
   def getInstalledPrograms = {
 
-    try {
-      val dirContents = "ls /usr/bin".!! split ('\n')
-      Some(Map("System Programs" -> dirContents.tail.filter { x => whitelist.contains(x) }))
-    } catch {
-      case t: Throwable => Logger.info("Directory not found", t); None
-    }
+    val bla = dirs.map { dir =>
+      try {
+        val dirContents = ("ls " + dir).!!.split('\n')
+        Some(Map(dir -> dirContents.filter { x => x != "" }.filter { x => if (dirs.head == dir) whitelist.contains(x) else true }))
 
-  }
-
-  def saveProgram = {
-    if (!("ls").!!.contains("bin"))
-      "mkdir bin".!!
-
-    /*import java.io._
-
-    val directory = new File("./bin");
-    
-    if (!(directory exists)) {
-      if (directory mkdir) {
-        //Successfully created new directory
-      } else {
-        //Failed to create new directory
+      } catch {
+        case t: Throwable => Logger.info("Directory not found", t); None
       }
-    }*/
+    }
+    bla.reduce((a, b) => a match {
+      case Some(s1) => Some(b.getOrElse(Map()) ++ s1)
+      case None => if (b.nonEmpty) b else None
+    })
   }
 
   /**
