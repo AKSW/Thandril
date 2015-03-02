@@ -46,10 +46,10 @@
                         <i class="fa fa-gears fa-fw"></i>  <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                        <li><a href="#" data-toggle="modal" data-target="#SettingsModal"><i class="fa fa-gear fa-fw"></i> Settings</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="#"  data-toggle="modal" data-target="#AboutModal"><i class="fa fa-quote-left fa-fw"></i> About</a>
+                        <li><a href="#" data-toggle="modal" data-target="#AboutModal"><i class="fa fa-quote-left fa-fw"></i> About</a>
                         </li>
                         <li>
                         	<a href="#" data-toggle="modal" data-target="#LicenseModal">
@@ -190,8 +190,26 @@
     <!-- /#wrapper -->
     
     <!-- Modal -->
+	<div class="modal fade" id="SettingsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog  modal-lg">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title">Settings</h4>
+	      </div>
+	      <div class="modal-body">
+	      </div>
+	      <div class="modal-footer">
+	      	<button type="button" class="btn btn-success">Save</button>
+	        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+    
+    <!-- Modal -->
 	<div class="modal fade" id="LicenseModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	  <div class="modal-dialog">
+	  <div class="modal-dialog  modal-lg">
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -208,7 +226,7 @@
 	</div>
 	
 	<div class="modal fade" id="AboutModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	  <div class="modal-dialog">
+	  <div class="modal-dialog  modal-lg">
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -269,6 +287,8 @@
     <script src="//rawgithub.com/stidges/jquery-searchable/master/dist/jquery.searchable-1.1.0.min.js" type="text/javascript"></script>
     <script src="@routes.Assets.at("javascripts/dropzone.js")" type="text/javascript"></script>
     
+    <script src="//cytoscape.github.io/cytoscape.js/api/cytoscape.js-latest/cytoscape.min.js" type="text/javascript"></script>
+    
     <script>
 		$('.fab').hover(function() {
 			$(this).toggleClass('active');
@@ -301,6 +321,92 @@
 				.fail(function() {
 					alert('failed')
 				});
+			});
+
+		$('#canvas').cytoscape({ //cy init
+			
+			style: cytoscape.stylesheet()
+			    .selector('node')
+			      .css({
+			        'height': 80,
+			        'width': 80,
+			        'background-fit': 'cover',
+			        'border-color': '#000',
+			        'border-width': 3,
+			        'border-opacity': 0.5
+			      })
+			    .selector('edge')
+			      .css({
+			        'width': 6,
+			        'target-arrow-shape': 'triangle',
+			        'line-color': '#5cb85c',
+			        'target-arrow-color': '#5cb85c'
+			      })
+			    .selector('#bird')
+			      .css({
+			        'background-image': 'https://cdn1.iconfinder.com/data/icons/nuove/128x128/apps/thunderbird-icon.png'
+			      })
+			    .selector('#cat')
+			      .css({
+			        'background-image': 'https://cdn4.iconfinder.com/data/icons/popular-social-service/110/dropbox.png'
+			      })
+			    .selector('#ladybug')
+			      .css({
+			        'background-image': 'https://cdn4.iconfinder.com/data/icons/popular-social-service/110/chrome.png'
+			      })
+			  .selector('#aphid')
+			      .css({
+			        'background-image': 'https://cdn3.iconfinder.com/data/icons/colorstroked/FireFox.png'
+			      })
+			  .selector('#rose')
+			      .css({
+			        'background-image': 'https://cdn3.iconfinder.com/data/icons/free-social-icons/67/facebook_circle_color-128.png'
+			      })
+			  .selector('#grasshopper')
+			      .css({
+			        'background-image': 'https://cdn1.iconfinder.com/data/icons/follow-the-herd/512/github_right-128.png'
+			      })
+			  .selector('#plant')
+			      .css({
+			        'background-image': 'https://cdn0.iconfinder.com/data/icons/PRACTIKA/128/twitter.png'
+			      })
+			  .selector('#wheat')
+			      .css({
+			        'background-image': 'https://cdn4.iconfinder.com/data/icons/ibrandify-basic-essentials-icon-set/512/pen_stroke_sketch_doodle_lineart_6-128.png'
+			      }),
+			  
+			  elements: {
+			    nodes: [
+			      { data: { id: 'cat' } },
+			      { data: { id: 'bird' } },
+			      { data: { id: 'ladybug' } },
+			      { data: { id: 'aphid' } },
+			      { data: { id: 'rose' } },
+			      { data: { id: 'grasshopper' } },
+			      { data: { id: 'plant' } },
+			      { data: { id: 'wheat' } }
+			    ],
+			    edges: [
+			      { data: { source: 'cat', target: 'bird' } },
+			      { data: { source: 'bird', target: 'ladybug' } },
+			      { data: { source: 'bird', target: 'grasshopper' } },
+			      { data: { source: 'grasshopper', target: 'plant' } },
+			      { data: { source: 'grasshopper', target: 'wheat' } },
+			      { data: { source: 'ladybug', target: 'aphid' } },
+			      { data: { source: 'aphid', target: 'rose' } }
+			    ]
+			  },
+			  
+			  
+			}); // cy init
+
+			var cy = $('#canvas').cytoscape('get');
+			cy.on('tap', 'node', function(){
+				  var nodes = this;
+				  var tapped = nodes;
+				  var food = [];
+				  console.log(nodes);
+				  console.log(tapped);
 			});
 		</script>
 

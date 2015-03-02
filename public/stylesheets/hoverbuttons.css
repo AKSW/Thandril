@@ -24,14 +24,21 @@
 	margin-top: -2px;
 }
 
+#canvas-buttons {
+	position: absolute;
+	bottom: 5px;
+	right: 5px;
+	z-index: 1;
+}
+
 #canvas-buttons .show-on-hover:hover>ul.dropdown-menu {
 	display: block;
 }
 
 #canvas-buttons .show-on-hover {
 	position: absolute;
-	bottom: 15px;
-	right: 25px;
+	bottom: 5px;
+	right: 20px;
 }
 
 #canvas-buttons .btn-io {
