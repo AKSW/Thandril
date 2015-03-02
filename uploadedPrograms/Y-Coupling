@@ -1,0 +1,18 @@
+#!/bin/bash
+
+case "$#" in
+	"1")
+		out1=$(cat)
+		out2="$($1)"
+		;;			
+	"2")
+		out1="$($1)"
+		out2="$($2)"
+		;;
+	*)
+		echo "Not enough/too many arguments"
+		exit 1
+		;;
+esac
+
+printf "$out1\n$out2\n"

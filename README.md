@@ -21,3 +21,7 @@ All you have to do is to install the [Typesafe Acticator](//www.playframework.co
 - activator run
 
 If you wanna package the Application and deploy it to some kind of Server-System, please have a look at the [Activator documentation](//typesafe.com/activator/docs).
+
+### Tested Platforms ###
+
+Thandril is developed under Fedora 21 and thereby well tested on this platform. It should also run on all other Linux based distributions, in which installed programs are located at /usr/bin.
