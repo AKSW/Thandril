@@ -128,8 +128,8 @@
 						        	</button>
 						        </div>
 						        <ul class="dropdown-menu dropdown-menu-right" role="menu">
-							        <li><a href="#" data-toggle="tooltip" data-placement="left" title="Load"><i class="fa fa-cloud-upload"></i></a></li>
-							        <li><a href="#" data-toggle="tooltip" data-placement="left" title="Save"><i class="fa fa-cloud-download"></i></a></li>
+							        <li><a href="#" id="loadProject" data-toggle="tooltip" data-placement="left" title="Load"><i class="fa fa-cloud-upload"></i></a></li>
+							        <li><a href="#" id="downloadProject" data-toggle="tooltip" data-placement="left" title="Save"><i class="fa fa-cloud-download"></i></a></li>
 						        </ul>  
 							</div>
 						</div>
@@ -170,7 +170,10 @@
 									<div class="program-element">
 										<i class="fa fa-file-text fa-2x fa-fw" style="color: gray;"></i>
 										<i class="prog-name">@prog</i>
-										<button type="button" class="btn btn-primary pull-right">Info</button>
+										<div class="pull-right">
+											<button type="button" class="btn btn-primary btn-info">Info</button>
+											<button type="button" class="btn btn-success btn-add">Add</button>
+										</div>
 										<hr/>
 									</div>
                     			}
@@ -288,6 +291,21 @@
 	    </div>
 	  </div>
 	</div>
+	
+	<div class="modal fade" id="CanvasEditModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-lg">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title"></h4>
+	      </div>
+	      <div class="modal-body">
+	      </div>
+	      <div class="modal-footer">
+	      </div>
+	    </div>
+	  </div>
+	</div>
 
     <!-- jQuery -->
     <script src="//code.jquery.com/jquery-2.1.3.min.js" type="text/javascript"></script>
@@ -316,111 +334,125 @@
 			childSelector : '.prog-name'
 		});
 	
-		$('.program-element button')
-			.click(function() {
+		$('.program-element .btn-info').click(function() {
 				var prog = $(this).prev().text();
+				
 				$.getJSON('http://localhost:9000/program/' + prog + '/info')
-				.done(function(data, status, jqXHR) {
+				 .done(function(data, status, jqXHR) {
 					var modal = $("#ProgramInfoModal");
+					
 					modal.find(".modal-title")
 						.empty()
 						.append(data.name);
+					
 					modal.find(".modal-body")
 						.empty()
 						.append(data.description
 							.replace(/\n/g,"<br/>")
 							.replace(/\t/g,"    "));
+					
 					$("#ProgramInfoModal").modal('show');
-				})
-				.fail(function() {
+				 })
+				 .fail(function() {
 					alert('failed')
-				});
+				 });
 			});
 
-		$('#canvas').cytoscape({ //cy init
+		var cy = cytoscape({
+
+			container: document.getElementById('canvas'),
 			
 			style: cytoscape.stylesheet()
-			    .selector('node')
-			      .css({
-			        'height': 80,
-			        'width': 80,
-			        'background-fit': 'cover',
-			        'border-color': '#000',
-			        'border-width': 3,
-			        'border-opacity': 0.5
-			      })
-			    .selector('edge')
-			      .css({
-			        'width': 6,
-			        'target-arrow-shape': 'triangle',
-			        'line-color': '#5cb85c',
-			        'target-arrow-color': '#5cb85c'
-			      })
-			    .selector('#bird')
-			      .css({
-			        'background-image': 'https://cdn1.iconfinder.com/data/icons/nuove/128x128/apps/thunderbird-icon.png'
-			      })
-			    .selector('#cat')
-			      .css({
-			        'background-image': 'https://cdn4.iconfinder.com/data/icons/popular-social-service/110/dropbox.png'
-			      })
-			    .selector('#ladybug')
-			      .css({
-			        'background-image': 'https://cdn4.iconfinder.com/data/icons/popular-social-service/110/chrome.png'
-			      })
-			  .selector('#aphid')
-			      .css({
-			        'background-image': 'https://cdn3.iconfinder.com/data/icons/colorstroked/FireFox.png'
-			      })
-			  .selector('#rose')
-			      .css({
-			        'background-image': 'https://cdn3.iconfinder.com/data/icons/free-social-icons/67/facebook_circle_color-128.png'
-			      })
-			  .selector('#grasshopper')
-			      .css({
-			        'background-image': 'https://cdn1.iconfinder.com/data/icons/follow-the-herd/512/github_right-128.png'
-			      })
-			  .selector('#plant')
-			      .css({
-			        'background-image': 'https://cdn0.iconfinder.com/data/icons/PRACTIKA/128/twitter.png'
-			      })
-			  .selector('#wheat')
-			      .css({
-			        'background-image': 'https://cdn4.iconfinder.com/data/icons/ibrandify-basic-essentials-icon-set/512/pen_stroke_sketch_doodle_lineart_6-128.png'
-			      }),
-			  
-			  elements: {
-			    nodes: [
-			      { data: { id: 'cat' } },
-			      { data: { id: 'bird' } },
-			      { data: { id: 'ladybug' } },
-			      { data: { id: 'aphid' } },
-			      { data: { id: 'rose' } },
-			      { data: { id: 'grasshopper' } },
-			      { data: { id: 'plant' } },
-			      { data: { id: 'wheat' } }
-			    ],
-			    edges: [
-			      { data: { source: 'cat', target: 'bird' } },
-			      { data: { source: 'bird', target: 'ladybug' } },
-			      { data: { source: 'bird', target: 'grasshopper' } },
-			      { data: { source: 'grasshopper', target: 'plant' } },
-			      { data: { source: 'grasshopper', target: 'wheat' } },
-			      { data: { source: 'ladybug', target: 'aphid' } },
-			      { data: { source: 'aphid', target: 'rose' } }
-			    ]
-			  }
-			  
-			}); // cy init
+				.selector('node')
+					.css({
+						'height': 80,
+						'width': 80,
+						'background-fit': 'cover',
+						'background-color': '#3C80F6',
+						'content': 'data(label)',
+						'color': 'yellow',
+						'text-valign': 'center'
+					})
+				.selector('edge')
+					.css({
+						'width': 6,
+						'target-arrow-shape': 'triangle',
+						'line-color': '#5cb85c',
+						'target-arrow-color': '#5cb85c'
+					})
+			}); 
 
-			var cy = $('#canvas').cytoscape('get');
-			cy.on('tap', 'node', function(){
-				  var nodes = this;
-				  var tapped = nodes;
-				  var food = [];
-				  console.log(nodes);
-				  console.log(tapped);
+		cy.on('click', 'node', function(event){
+			var node = $(this)[0];
+			var modal = $('#CanvasEditModal');
+			
+			var id = node.data('id');
+			var name = node.data('label');
+			var arguments = node.data('arguments');
+			var form = $('<div><form id="CanvasEditModal_form"><input id="CanvasEditModal_input" type="text" value="'+arguments+'" required></form></div>');
+			form.find("#CanvasEditModal_form").submit(function(event){
+				event.preventDefault();
+				console.log(modal.find('input').val());
+				cy.getElementById(id).data( 'arguments', modal.find('input').val() );
+				modal.modal('hide');
 			});
+			
+			var txt = 'Your command line arguments are:<br>';
+			var del = $('<button type="button" class="btn btn-danger">Delete</button>');
+			del.on("click", function(){
+				cy.remove(cy.$("#"+id));
+				modal.modal('hide');
+			});
+			
+			modal.find('.modal-title').empty().append("Edit Node "+name);
+			modal.find('.modal-body').empty().append(txt, form);
+			modal.find('.modal-footer').empty().append(
+				'<button type="submit" form="CanvasEditModal_form" class="btn btn-success">Save</button>'
+				,del,
+				'<button type="button" class="btn btn-primary" data-dismiss="modal">Abort</button>');
+			
+			modal.modal('show');
+		});
+			
+		var lastElementID = "";
+		
+		$(".btn-add").click( function(event) {
+			var elementLabel = $(event.target).closest(".program-element").find(".prog-name").text();
+			var elementId = "" + new Date().getTime();
+			var oldElements = cy.elements('*').jsons();
+			var newElement = [];
+			
+			if(oldElements.length == 0)
+				newElement = [	{ group: "nodes", data: { id: elementId, label: elementLabel, arguments: ""}}];
+			else{
+				newElement = [	{ group: "nodes", data: { id: elementId, label: elementLabel}},
+												{ group: "edges", data: { source: lastElementID, target: elementId}} ];
+			}
+			
+			lastElementID = elementId;
+			
+			cy.load(oldElements.concat(newElement));
+		});
+
+		$('#downloadProject').click( function(){
+			var data = cy.elements('*').jsons();
+			var pom = document.createElement('a');
+			
+			pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(data)));
+			pom.setAttribute('download', 'script');
+			pom.style.display = 'none';
+			document.body.appendChild(pom);
+			
+			pom.click();
+			
+			document.body.removeChild(pom);
+		});
+
+		$('#loadProject').click( function(){
+			//TODO Open File Chooser, select file, read file in JS without uploading, load with cytoscape
+			var elements = {};
+			cy.load(elements);
+		});
 		</script>
 
 </body>
