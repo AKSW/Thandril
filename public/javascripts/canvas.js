@@ -1,3 +1,7 @@
+/** 
+ * Cytoscape Config
+ */
+
 var cy = cytoscape({
 	container: document.getElementById('canvas'),
 	
@@ -21,6 +25,9 @@ var cy = cytoscape({
 			})
 }); 
 
+/** 
+ * Open up a new modal, containing some vital Informations about the program
+ */
 cy.on('click', 'node', function(event){
 	var node = $(this)[0];
 	var modal = $('#CanvasEditModal');
@@ -29,11 +36,8 @@ cy.on('click', 'node', function(event){
 	var name = node.data('label');
 	var arguments = node.data('arguments');
 	var form = $('<div><form id="CanvasEditModal_form"><input id="CanvasEditModal_input" type="text" value="'+arguments+'" required></form></div>');
-	form.find("#CanvasEditModal_form").submit(function(event){
-		event.preventDefault();
-		cy.getElementById(id).data( 'arguments', modal.find('input').val() );
-		modal.modal('hide');
-	});
+	
+	form.find("#CanvasEditModal_form").submit(function(event){ event.preventDefault(); onNodeSave(modal); });
 	
 	var txt = 'Your command line arguments are:<br>';
 	var del = $('<button type="button" class="btn btn-danger">Delete</button>');
@@ -49,6 +53,18 @@ cy.on('click', 'node', function(event){
 	modal.modal('show');
 });
 
+/** 
+ * Save changes to the arguments of a program
+ */
+function onNodeSave(modal){
+	
+	cy.getElementById(id).data( 'arguments', modal.find('input').val() );
+	modal.modal('hide');
+}
+
+/** 
+ * Delete a program from the canvas and fix sequence
+ */
 function onNodeDelete(id, modal){
 	var edges = cy.$("#"+id).connectedEdges();
 	if(edges.size() > 1){
@@ -62,73 +78,101 @@ function onNodeDelete(id, modal){
 	modal.modal('hide');
 }
 
+/** 
+ * Add a new program to the canvas, specified by an user action
+ */
 $(".btn-add").click( function(event) {
 	var elementLabel = $(event.target).closest(".program-element").find(".prog-name").text();
 	var elementId = "" + new Date().getTime();
 	var oldElements = cy.elements('*').jsons();
 	var newElement = [];
 	var lastElement = cy.nodes("*").leaves().first();
+	var edgeID= elementId + "1";
 	
 	if(oldElements.length == 0)
 		newElement = [	{ group: "nodes", data: { id: elementId, label: elementLabel, arguments: ""}}];
 	else{
 		newElement = [	{ group: "nodes", data: { id: elementId, label: elementLabel, arguments: ""}},
-						{ group: "edges", data: { source: lastElement.id(), target: elementId}} ];
+						{ group: "edges", data: { id: edgeID, source: lastElement.id(), target: elementId}} ];
 	}
 	
 	// Can't use cy.add, because a position is needed, which is not available. Workaround: cy.load
 	cy.load(oldElements.concat(newElement));
 });
 
+/** 
+ * Open download dialog for download a zip file that contains the project.json and an script
+ */
 $('#downloadProject').click( function(){
+	var zip = new JSZip();
+	
 	var data = cy.elements('*').jsons();
-	var pom = document.createElement('a');
+	var script = generateScript(extractSequence());
 	
-	pom.setAttribute('href', 'data:application/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(data)));
-	pom.setAttribute('download', 'script');
-	pom.style.display = 'none';
-	document.body.appendChild(pom);
+	zip.file("project.json",JSON.stringify(data));
+	zip.file("script.sh", script, {unixPermissions: "755"}); //, 
 	
-	pom.click();
-	
-	document.body.removeChild(pom);
+	var content = zip.generate({type: "blob", platform: "UNIX"});
+
+	saveAs(content, "project.zip");
 });
 
+/** 
+ * Open FileChooser from hidden element
+ */
 $('#loadProject').click( function(){
-	//TODO Open File Chooser, select file, read file in JS without uploading, load with cytoscape
-	var elements = {};
-	cy.load(elements);
+	$('#files').click();
 });
 
-$('#runProject').click( function(){
-	//Extract sequence
-	var nodes = cy.nodes("*");
-	var root = cy.nodes().roots().first();
-	var edges = root.edgesTo(nodes);
-	
-	var seq = [{name: root.data("label"), args: root.data("arguments")}];
-	
-	while(edges.size() >= 1){
-		var next = edges.first().target();
-		edges = next.edgesTo(nodes);
-		seq.push({name: next.data("label"), args: next.data("arguments")});
+/** 
+ * Read JSON files, selected by Filechooser and load the content into the canvas
+ */
+$('#files').on("change", function(){
+	var file = document.getElementById('files').files[0];
+	var reader = new FileReader();
+	var dataType = /json.*/;
+
+	if (file.type.match(dataType)) {
+		reader.onload = function() { cy.load(JSON.parse(reader.result)); }
+		var content = reader.readAsText(file);
 	}
-	console.log(seq);
+});
+
+/** 
+ * TODO Upload Script, run it, download result
+ */
+$('#runProject').click( function(){
+});
+
+/** 
+ * Extract all programs and their arguments from the canvas
+ * 
+ * @return JsonArray(JsonObjects(name: String,args: String))
+ */
+function extractSequence() {
+	var nodes = cy.nodes("*");
+	var next = cy.nodes().roots().first();
 	
+	var seq = [];
+	
+	while(next.size() != 0){
+		seq.push({name: next.data("label"), args: next.data("arguments")});
+		var edges = next.edgesTo(nodes);
+		next = (edges.size() != 0) ? edges.first().target() : edges; //Hack to return a Datatype with the method size()
+	}
+	return seq;
+}
+
+/** 
+ * Generate a bash script from an Array of type JsonArray(JsonObjects(name,args))
+ * 
+ * @return script: String
+ */
+function generateScript(seq) {
 	var script = "#!/bin/bash\n\n";
 	for(i in seq) {
 		script += seq[i].name + " " + seq[i].args;
 		if(i != seq.length-1) script += "|\n";
 	}
-
-	var pom = document.createElement('a');
-	
-	pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(script));
-	pom.setAttribute('download', 'script.sh');
-	pom.style.display = 'none';
-	document.body.appendChild(pom);
-	
-	pom.click();
-	
-	document.body.removeChild(pom);
-});
+	return script;
+}
