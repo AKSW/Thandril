@@ -202,8 +202,9 @@
 	        <h4 class="modal-title">Settings</h4>
 	      </div>
 	      <div class="modal-body">
-	      	<h4>Whitelist</h4><hr>
+	      	<h4>Whitelist</h4><p>By this whitelist programs are filtered that are located at /usr/bin. If they were not filtered, you would get a thoused programs and more, which leads to ugly performance issues.</p>
 	      	<textarea id="whitelist" rows="3" cols="100">@whitelist.foldLeft("")((a,b) => a + b + ", ").dropRight(2)</textarea>
+	      	<hr>
 	      </div>
 	      <div class="modal-footer">
 	      	<button type="button" class="btn btn-success">Save</button>
