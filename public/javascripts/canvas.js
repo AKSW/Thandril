@@ -135,6 +135,8 @@ $('#files').on("change", function(){
 	if (file.type.match(dataType)) {
 		reader.onload = function() { cy.load(JSON.parse(reader.result)); }
 		var content = reader.readAsText(file);
+	} else {
+		swal("Sorry man!", "Your not giving me a file I can work with! I need a JSON File...", "error")
 	}
 });
 
@@ -142,6 +144,7 @@ $('#files').on("change", function(){
  * TODO Upload Script, run it, download result
  */
 $('#runProject').click( function(){
+	swal("Come on", "You didn't expected that you can run your hacking stuff on my Server, right?! --> This is not ready yet...", "info")
 });
 
 /** 

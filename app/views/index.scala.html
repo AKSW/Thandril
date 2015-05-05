@@ -394,7 +394,7 @@
 					$("#ProgramInfoModal").modal('show');
 				 })
 				 .fail(function() {
-					 swal("It's dead, Jim!", "I apologize. Something went obviously wrong. Please report this failure on Github!", "warning")
+					 swal("It's dead, Jim!", "Telduran, my monky officer, died recently. My monkeys can't give to you what you want. Please report this failure on Github!", "error")
 				 });
 			});
 
@@ -419,8 +419,8 @@
 			    dataType: "json",
 			    contentType: "application/json; charset=utf-8"
 			  })
-			  .done( function(){ swal("Check", "Your Settings have been saved", "success");})
-		    .fail( function(){ swal("Failed", "I apologize. Something went obviously wrong. Please report this failure on Github!", "error");});
+			  .done( function(){ swal("Good Work!", "My enslaved monkey crew put everything into the right place. Your Settings have been saved.", "success");})
+		    .fail( function(){ swal("What the heck?", "My monkey workers are eating bananas right now. Please don't give them bananas! Please report this failure on Github!", "error");});
 		});
 		</script>
 		<script src="@routes.Assets.at("javascripts/jszip.js")" type="text/javascript"></script>
