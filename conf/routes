@@ -6,6 +6,8 @@
 GET     /                           controllers.Application.index
 GET     /program/:program/info      controllers.Application.programInfo(program)
 POST	/program/upload				controllers.Application.upload()
+GET     /whitelist					controllers.Application.getWhitelist()
+POST	/whitelist					controllers.Application.pushWhitelist()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

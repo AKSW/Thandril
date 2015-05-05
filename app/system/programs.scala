@@ -6,7 +6,7 @@ import play.api.Logger
 
 object programs {
 
-  val whitelist = Set("cat", "grep", "dmesg", "sed")
+  var whitelist = Set("cat", "grep", "dmesg", "sed")
   val dirs = List("/usr/bin", "./uploadedPrograms")
 
   /**

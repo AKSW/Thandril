@@ -1,0 +1,6 @@
+sed
+ls
+dmesg
+grep
+yum
+cat
