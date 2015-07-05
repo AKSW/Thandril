@@ -1,7 +1,8 @@
 Thandril
 =======================
+[![Build Status](https://snap-ci.com/AKSW/Thandril/branch/master/build_image)](https://snap-ci.com/AKSW/Thandril/branch/master)
 
-This repository contains the code of the Web-Application Thandril. Thandril is an application where users are abel to create workflow pipelines for Linux command line programs.
+Thandril is a Web-Application in which users are abel to create workflow pipelines for Linux command line programs.
 
 ![Screenshot of Thandril](https://github.com/AKSW/Thandril/raw/master/screenshot.png)
 
@@ -15,13 +16,13 @@ Thandril was built with a variety of Frameworks and is mainly written in Scala, 
 
 ### Compilation/Running the Server  ###
 
-All you have to do is to install the [Typesafe Acticator](//www.playframework.com/documentation/2.3.x/Installing) and subsequent execute the following commands:
+All you have to do is to switch into the projects main directory and subsequent execute the following commands:
 
-- activator update
-- activator run
+- ./activator update
+- ./activator run
 
 If you wanna package the Application and deploy it to some kind of Server-System, please have a look at the [Activator documentation](//typesafe.com/activator/docs).
 
 ### Tested Platforms ###
 
-Thandril is developed under Fedora 21 and thereby well tested on this platform. It should also run on all other Linux based distributions, in which installed programs are located at /usr/bin.
+Thandril is developed under Fedora 22 and thereby well tested on this platform. It should also run on all other Linux based distributions, in which installed programs are located at /usr/bin.
