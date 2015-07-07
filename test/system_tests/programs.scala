@@ -19,7 +19,8 @@ class ProgramsSpec extends Specification {
 
     "List all installed programs (example grep)" in new WithApplication() {
       getInstalledPrograms must beSome
-      getInstalledPrograms.get("/usr/bin").contains("grep") must beTrue
+      getInstalledPrograms.get.get("/usr/bin") must beSome
+      val bla = getInstalledPrograms.get.get("/usr/bin").get.isEmpty must beFalse
     }
 
     "return the help text for a program (example: grep)" in {
