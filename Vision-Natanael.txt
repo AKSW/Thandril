@@ -1,0 +1,11 @@
+Vision von Natanael für das Programm:
+
+- Jedes Element der Chain wird in einem Docker-Container gestartet
+	- Startkommando: docker run -i --rm container cmd
+	- das Startkommando ist Pipefähig
+	- Es kann je Chain-Element ein eigenes Dockerfile hochgeladen werden, das den Container beschreibt
+- Es werden versch. Standard Docker-Container angeboten (Ubuntu 14.04 mit Standardprogrammen wie grep, ls, wget, etc.) 
+- Entweder Nutzung des lokalen Docker oder Nutzung eines Remote-Docker über Docker-API (--> macht das Ganze  unabhängiger von der Platform)
+- Docker-Container können ein Verzeichnis als Standard-Volume mounten, in das ggf. Datein geschrieben werden
+- Bei Ausführungder Chain ist anzuzeigen, bei welchem Punkt der Chain gerade alles ist (bspw. Grün-blinkend/fadend umrahmen)
+
