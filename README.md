@@ -1,9 +1,10 @@
 Thandril
 =======================
 [![Build Status](https://snap-ci.com/AKSW/Thandril/branch/master/build_image)](https://snap-ci.com/AKSW/Thandril/branch/master)
-[![License](https://img.shields.io/badge/license-Apache v2-blue.svg)](https://github.com/HTWK-App/BuildingsService/blob/master/LICENSE)
+[![License](https://img.shields.io/badge/license-Apache v2-blue.svg)](https://github.com/AKSW/Thandril/blob/master/LICENSE)
 [![Language](https://img.shields.io/badge/language-Scala%20(2.11.7)-blue.svg)](http://www.scala-lang.org/)
 [![Framework](https://img.shields.io/badge/framework-PlayFramework%20(2.3.9)-blue.svg)](https://www.playframework.com/)
+[![Lines of Code](https://img.shields.io/badge/loc-~523-lightgrey.svg)](https://github.com/HTWK-App/BuildingsService/tree/master/app)
 
 Thandril is a Web-Application in which users are abel to create workflow pipelines for Linux command line programs.
 
